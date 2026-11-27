@@ -373,6 +373,7 @@ class S3_Data(Day3Scene):
         self.play(GrowArrow(arr), FadeIn(arr_t), run_time=0.9)
         self.play(FadeIn(gr[0]), LaggedStart(*[ReplacementTransform(a.copy(), b) for a, b in zip(gl[1], gr[1])], lag_ratio=0.03),
                   run_time=2.4)
+        self.add(gr[1])  # make sure the converted values stay on screen, above the cells
         cap_r = T("0 … 1  →  stable training", 24, GREEN).next_to(gr, DOWN, buff=0.35)
         self.play(FadeIn(cap_r), run_time=0.8)
         self.at(24.0)

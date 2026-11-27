@@ -2,3 +2,4 @@ __pycache__/
 *.pyc
 .venv/
 data/
+03_neural_network/video/media/
