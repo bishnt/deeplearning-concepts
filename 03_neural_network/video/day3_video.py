@@ -239,6 +239,8 @@ class S2_Build(Day3Scene):
         net = Net()
         self.play(FadeOut(VGroup(box, box_t, a_in, a_out, stack, out_cap, win, l1, l2)), FadeOut(grid), run_time=0.7)
         self.play(d.animate.scale(0.5).move_to([-6.1, net.cy, 0]), run_time=0.9)
+        feed = Arrow([-5.15, net.cy, 0], [-3.95, net.cy, 0], buff=0, color=GRAY_C, stroke_width=3)
+        self.play(GrowArrow(feed), run_time=0.4)
         self.play(*[FadeIn(g) for g in net.nodes], FadeIn(net.dots),
                   *[Create(e, lag_ratio=0.01) for e in net.edges], run_time=2.6)
         self.play(*[FadeIn(lb) for lb in net.labels], run_time=0.8)
@@ -267,7 +269,7 @@ class S2_Build(Day3Scene):
         self.at(30.0)
 
         # --- d. count the parameters ------------------------------------------------------
-        self.play(FadeOut(Group(d, leg, bars, ans)),
+        self.play(FadeOut(Group(d, feed, leg, bars, ans)),
                   net.body().animate.scale(0.6).move_to([-3.9, 0.3, 0]), run_time=1.3)
         head = T("Counting the parameters", 30, GRAY_C)
         rows = VGroup()
@@ -369,7 +371,7 @@ class S3_Data(Day3Scene):
         arr = Arrow([-1.5, 0, 0], [1.5, 0, 0], buff=0, color=YELLOW)
         arr_t = T("ToTensor()   ÷ 255", 26, YELLOW).next_to(arr, UP, buff=0.15)
         self.play(GrowArrow(arr), FadeIn(arr_t), run_time=0.9)
-        self.play(FadeIn(gr[0]), LaggedStart(*[TransformFromCopy(a, b) for a, b in zip(gl[1], gr[1])], lag_ratio=0.03),
+        self.play(FadeIn(gr[0]), LaggedStart(*[ReplacementTransform(a.copy(), b) for a, b in zip(gl[1], gr[1])], lag_ratio=0.03),
                   run_time=2.4)
         cap_r = T("0 … 1  →  stable training", 24, GREEN).next_to(gr, DOWN, buff=0.35)
         self.play(FadeIn(cap_r), run_time=0.8)
@@ -613,7 +615,7 @@ class S5_Loss(Day3Scene):
         self.play(FadeIn(dg_, scale=2), FadeIn(tg), run_time=1.2)
         self.play(FadeIn(dr_, scale=2), FadeIn(tr), run_time=1.2)
         pun = VGroup(T("confidently wrong", 28, YELLOW, weight=BOLD), T("→  huge punishment", 28, YELLOW, weight=BOLD)
-                     ).arrange(DOWN, aligned_edge=LEFT, buff=0.1).move_to([4.4, -2.9, 0]).align_to(tg, LEFT)
+                     ).arrange(DOWN, aligned_edge=LEFT, buff=0.1).move_to([4.4, -2.9, 0]).align_to([1.5, 0, 0], LEFT)
         self.play(Indicate(dr_, color=RED, scale_factor=1.8), FadeIn(pun), run_time=1.2)
         self.at(30.0)
         self.play(FadeOut(Group(ax, curve, xl, yl, ticks, dg_, dr_, tg, tr, pun)), run_time=0.5)
